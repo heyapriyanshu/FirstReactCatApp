@@ -1,17 +1,42 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+import {useEffect, useState} from "react"
+import React from "react";
+import ReactDOM from "react-dom/client"
+import "./index.css"
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+function App() {
+  const [facts,setFacts] = useState("")
+const [count,setCount] = useState(0)
+
+
+async function getFacts(){
+  const res = await fetch("https://catfact.ninja/fact")
+  const data = await res.json()
+  setCount(c => c+1)
+  setFacts(data.fact)
+}
+useEffect(function (){
+  getFacts();
+},[]);
+  return (
+    <div className="App">
+      <header className="App-header">
+        {/* <img src={logo} className="App-logo" alt="logo" /> */}
+       
+        
+     
+     <h1 className="fact">Fact: {facts}</h1>
+     <div className="order">
+
+     
+     <p >Total facts read : {count-1} </p>
+     <button class = "btn" onClick = {getFacts}> Get Another Fact </button>
+     
+   
+     </div>
+      </header>
+    </div>
+  );
+}
+const root = ReactDOM.createRoot(document.getElementById("root")).render(<React.StrictMode> <App /> </React.StrictMode>)
